@@ -1,0 +1,227 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "API Desbravatech"
+  description: "API para gerenciar usuários"
+host: "localhost:5078"
+schemes:
+  - "http"
+paths:
+  /api/usuarios/test-connection:
+    get:
+      summary: "Testar Conexão"
+      description: "Verifica se a aplicação consegue se conectar ao banco de dados"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "string"
+          examples:
+            application/json: "Connected to the database successfully!"
+        500:
+          description: "Erro"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "integer"
+                example: 500
+              message:
+                type: "string"
+                example: "Failed to connect to the database."
+  /api/usuarios:
+    get:
+      summary: "Inserir Usuário via GET"
+      description: "Insere um novo usuário no banco de dados usando parâmetros de consulta"
+      parameters:
+        - name: "nome"
+          in: "query"
+          required: true
+          type: "string"
+          description: "Nome do usuário"
+        - name: "email"
+          in: "query"
+          required: true
+          type: "string"
+          description: "Email do usuário"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 1
+              nome:
+                type: "string"
+                example: "Andre"
+              email:
+                type: "string"
+                example: "andre@example.com"
+    post:
+      summary: "Inserir Usuário via POST"
+      description: "Insere um novo usuário no banco de dados usando um corpo JSON"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              nome:
+                type: "string"
+              email:
+                type: "string"
+            example:
+              nome: "Andre"
+              email: "andre@example.com"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 1
+              nome:
+                type: "string"
+                example: "Andre"
+              email:
+                type: "string"
+                example: "andre@example.com"
+  /api/usuarios/all:
+    get:
+      summary: "Obter Todos os Usuários"
+      description: "Retorna uma lista de todos os usuários no banco de dados"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                id:
+                  type: "integer"
+                  example: 1
+                nome:
+                  type: "string"
+                  example: "Andre"
+                email:
+                  type: "string"
+                  example: "andre@example.com"
+  /api/usuarios/{id}:
+    get:
+      summary: "Obter Usuário pelo ID"
+      description: "Retorna os detalhes de um usuário específico pelo ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID do usuário"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 1
+              nome:
+                type: "string"
+                example: "Andre"
+              email:
+                type: "string"
+                example: "andre@example.com"
+        404:
+          description: "Não Encontrado"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "integer"
+                example: 404
+              message:
+                type: "string"
+                example: "User not found."
+    put:
+      summary: "Atualizar um Usuário"
+      description: "Atualiza as informações de um usuário existente"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID do usuário"
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+              nome:
+                type: "string"
+              email:
+                type: "string"
+            example:
+              id: 1
+              nome: "NovoNome"
+              email: "NovoEmail"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 1
+              nome:
+                type: "string"
+                example: "NovoNome"
+              email:
+                type: "string"
+                example: "NovoEmail"
+        404:
+          description: "Não Encontrado"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "integer"
+                example: 404
+              message:
+                type: "string"
+                example: "User not found."
+    delete:
+      summary: "Deletar um Usuário"
+      description: "Deleta um usuário específico pelo ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID do usuário"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            type: "string"
+            example: "User deleted successfully."
+        404:
+          description: "Não Encontrado"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "integer"
+                example: 404
+              message:
+                type: "string"
+                example: "User not found."

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação da API - Desbravatech</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentação da API - Desbravatech</h1>
+
+    <h2>1. Introdução</h2>
+    <p><strong>Objetivo da API:</strong><br>
+    A API desenvolvida durante o estágio na empresa Desbravatech tem como objetivo gerenciar usuários, permitindo operações de criação, leitura, atualização e deleção (CRUD) em um banco de dados MariaDB.</p>
+    <p><strong>Tecnologias Utilizadas:</strong><br>
+    - .NET 8.0<br>
+    - Entity Framework Core<br>
+    - MariaDB<br>
+    - Swagger para documentação</p>
+
+    <h2>2. Configuração Inicial</h2>
+    <p><strong>Instalação do .NET SDK:</strong><br>
+    Para executar a aplicação, é necessário ter o .NET SDK instalado. A versão utilizada é a 8.0.</p>
+    <pre><code>dotnet --version</code></pre>
+    <p><strong>Instalação do Entity Framework Core:</strong><br>
+    Os seguintes pacotes NuGet foram adicionados ao projeto:</p>
+    <pre><code>&lt;PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" /&gt;
+&lt;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" /&gt;
+&lt;PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-preview.1" /&gt;
+&lt;PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" /&gt;</code></pre>
+    <p><strong>Configuração do Banco de Dados:</strong><br>
+    No arquivo <code>appsettings.json</code>, a string de conexão para o banco de dados MariaDB é configurada da seguinte forma:</p>
+    <pre><code>"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost;Database=DesbravatechDB;User=root;Password=yourpassword;"
+}</code></pre>
+
+    <h2>3. Endpoints da API</h2>
+    <h3>GET /api/usuarios/test-connection</h3>
+    <p><strong>Descrição:</strong> Verifica se a aplicação consegue se conectar ao banco de dados.</p>
+    <pre><code>Resposta de Sucesso:
+"Connected to the database successfully!"
+
+Resposta de Erro:
+{
+    "status": 500,
+    "message": "Failed to connect to the database."
+}</code></pre>
+
+    <h3>GET /api/usuarios</h3>
+    <p><strong>Descrição:</strong> Insere um novo usuário no banco de dados usando parâmetros de consulta.</p>
+    <pre><code>Parâmetros de Consulta:
+- nome (string)
+- email (string)
+
+Resposta de Sucesso:
+{
+    "id": 1,
+    "nome": "Andre",
+    "email": "andre@example.com"
+}</code></pre>
+
+    <h3>POST /api/usuarios</h3>
+    <p><strong>Descrição:</strong> Insere um novo usuário no banco de dados usando um corpo JSON.</p>
+    <pre><code>Cabeçalho:
+- Content-Type: application/json
+
+Corpo da Requisição:
+{
+    "nome": "Andre",
+    "email": "andre@example.com"
+}
+
+Resposta de Sucesso:
+{
+    "id": 1,
+    "nome": "Andre",
+    "email": "andre@example.com"
+}</code></pre>
+
+    <h3>GET /api/usuarios/all</h3>
+    <p><strong>Descrição:</strong> Retorna uma lista de todos os usuários no banco de dados.</p>
+    <pre><code>Resposta de Sucesso:
+[
+    {
+        "id": 1,
+        "nome": "Andre",
+        "email": "andre@example.com"
+    },
+    ...
+]</code></pre>
+
+    <h3>GET /api/usuarios/{id}</h3>
+    <p><strong>Descrição:</strong> Retorna os detalhes de um usuário específico pelo ID.</p>
+    <pre><code>Parâmetros da URL:
+- id (int)
+
+Resposta de Sucesso:
+{
+    "id": 1,
+    "nome": "Andre",
+    "email": "andre@example.com"
+}
+
+Resposta de Erro:
+{
+    "status": 404,
+    "message": "User not found."
+}</code></pre>
+
+    <h3>PUT /api/usuarios/{id}</h3>
+    <p><strong>Descrição:</strong> Atualiza as informações de um usuário existente.</p>
+    <pre><code>Parâmetros da URL:
+- id (int)
+
+Cabeçalho:
+- Content-Type: application/json
+
+Corpo da Requisição:
+{
+    "id": 1,
+    "nome": "NovoNome",
+    "email": "NovoEmail"
+}
+
+Resposta de Sucesso:
+{
+    "id": 1,
+    "nome": "NovoNome",
+    "email": "NovoEmail"
+}
+
+Resposta de Erro:
+{
+    "status": 404,
+    "message": "User not found."
+}</code></pre>
+
+    <h3>DELETE /api/usuarios/{id}</h3>
+    <p><strong>Descrição:</strong> Deleta um usuário específico pelo ID.</p>
+    <pre><code>Parâmetros da URL:
+- id (int)
+
+Resposta de Sucesso:
+"User deleted successfully."
+
+Resposta de Erro:
+{
+    "status": 404,
+    "message": "User not found."
+}</code></pre>
+
+    <h2>4. Exemplos de Uso</h2>
+    <pre><code>**Inserir Usuário via GET:**
+GET http://localhost:5078/api/usuarios?nome=Andre&email=andre@example.com
+
+**Inserir Usuário via POST:**
+POST http://localhost:5078/api/usuarios
+Content-Type: application/json
+{
+    "nome": "Andre",
+    "email": "andre@example.com"
+}
+
+**Obter Todos os Usuários:**
+GET http://localhost:5078/api/usuarios/all
+
+**Obter Usuário pelo ID:**
+GET http://localhost:5078/api/usuarios/1
+
+**Atualizar um Usuário:**
+PUT http://localhost:5078/api/usuarios/1
+Content-Type: application/json
+{
+    "id": 1,
+    "nome": "NovoNome",
+    "email": "NovoEmail"
+}
+
+**Deletar um Usuário:**
+DELETE http://localhost:5078/api/usuarios/1</code></pre>
+
+    <h2>5. Conclusão</h2>
+    <p>A documentação acima cobre todos os endpoints principais da API desenvolvida durante o estágio na Desbravatech. Esta API permite operações completas de gerenciamento de usuários, incluindo criação, leitura, atualização e deleção (CRUD). A documentação foi feita para ser clara e detalhada, facilitando o entendimento e o uso da API por outros desenvolvedores.</p>
+    <p>Se precisar de mais alguma coisa ou tiver dúvidas, estarei à disposição!</p>
+</body>
+</html>
